@@ -3,71 +3,38 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 
-interface Driver {
-  driverId: string[];
-  code: string[];
-  PermanentNumber: number;
-  GivenName: string[];
-  FamilyName: string[];
-  DateOfBirth: string[];
-  Nationality: string[];
-  $: {
-    url: string;
-  };
-}
-
-interface Standing {
+interface ConstructorStanding {
   position: number;
   points: number;
   wins: number;
-}
-
-interface Constructor {
-  constructorId: string[];
   name: string;
   nationality: string;
-  $: {
-    url: string;
-  };
 }
 
-const DriverStandings = () => {
-  var xml2js = require('xml2js');
+const Page = () => {
+  var xml2js = require('xml2js')
+  const [loading, setLoading] = useState(false);
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [round, setRound] = useState('1');
-  const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [constructors, setConstructors] = useState<Constructor[]>([]);
-  const [standings, setStandings] = useState<Standing[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [constructorStandings, setConstructorStandings] = useState<ConstructorStanding[]>([]);
+  const [error, setError] = useState('')
 
-  const [error, setError] = useState('');
-
-
-  const fetchData = async () => {
+  const fetchConstructorData = async () => {
     setLoading(true);
     setError('');
-
     try {
-      const response = await axios.get(`http://ergast.com/api/f1/${year}/${round}/driverStandings`);
+      const response = await axios.get(`http://ergast.com/api/f1/${year}/${round}/constructorStandings`);
       const parser = new xml2js.Parser();
       const result = await parser.parseStringPromise(response.data);
-      const standingsList = result.MRData.StandingsTable[0].StandingsList[0].DriverStanding;
-      const drivers: Driver[] = standingsList.map((standing: any) => standing.Driver[0]);
-      const constructors: Constructor[] = standingsList.map((standing: any) => ({
-        constructorId: standing.Constructor[0].constructorId,
-        name: standing.Constructor[0].Name,
-        nationality: standing.Constructor[0].Nationality,
-        $: standing.Constructor[0].$
-      }));
-      const standings: Standing[] = standingsList.map((standing: any) => ({
+      const standingsList = result.MRData.StandingsTable[0].StandingsList[0].ConstructorStanding;
+      const constructorStandings: ConstructorStanding[] = standingsList.map((standing: any) => ({
         position: parseInt(standing.$.position),
         points: parseInt(standing.$.points),
-        wins: parseInt(standing.$.wins)
-      }));
-      
-      setDrivers(drivers);
-      setConstructors(constructors);
-      setStandings(standings);
+        wins: parseInt(standing.$.wins),
+        name: standing.Constructor[0].Name[0],
+        nationality: standing.Constructor[0].Nationality[0]
+  }));
+      setConstructorStandings(constructorStandings);
     } catch (error) {
       setError('Error fetching data. Please try again later.');
       console.error('Error:', error);
@@ -77,12 +44,12 @@ const DriverStandings = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchConstructorData();
+  }, [year, round]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchData();
+    fetchConstructorData();
   };
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,8 +71,8 @@ const DriverStandings = () => {
       </div>
     );
   }
- 
-  return (
+
+  return(
     <div>
       <form onSubmit={handleSubmit}>
         <label>
@@ -118,24 +85,20 @@ const DriverStandings = () => {
         </label>
         <button type="submit">Submit</button>
       </form>
-      {error && <div>{error}</div>}
-      <h1>Standings</h1>
-      <Table aria-label="Standings table">
+      <Table>
         <TableHeader>
-          <TableColumn>Number</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Constructor Name</TableColumn>
           <TableColumn>Position</TableColumn>
+          <TableColumn>Name</TableColumn>
+          <TableColumn>Nationality</TableColumn>
           <TableColumn>Points</TableColumn>
           <TableColumn>Wins</TableColumn>
         </TableHeader>
         <TableBody>
-          {standings.map((standing, index) => (
+          {constructorStandings.map((standing, index) => (
             <TableRow key={index}>
-              <TableCell>{drivers[index]?.PermanentNumber || '-'}</TableCell>
-              <TableCell>{drivers[index]?.GivenName?.[0]}  {drivers[index]?.FamilyName?.[0]}</TableCell>
-              <TableCell>{constructors[index]?.name?.[0]}</TableCell>
               <TableCell>{standing.position}</TableCell>
+              <TableCell>{standing.name}</TableCell>
+              <TableCell>{standing.nationality}</TableCell>
               <TableCell>{standing.points}</TableCell>
               <TableCell>{standing.wins}</TableCell>
             </TableRow>
@@ -144,8 +107,6 @@ const DriverStandings = () => {
       </Table>
     </div>
   );
+}
 
-          }
-
-
-export default DriverStandings;
+export default Page;
