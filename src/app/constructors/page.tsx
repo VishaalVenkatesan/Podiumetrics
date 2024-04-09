@@ -26,7 +26,7 @@ const fetchData = async () => {
 
   try {
     // Sends a GET request to the API endpoint with the specified year.
-    const response = await axios.get(`http://ergast.com/api/f1/${year}/constructors`);
+    const response = await axios.get(`https://ergast.com/api/f1/${year}/constructors`);
     //new instance of xm2js parser.
     const parser = new xml2js.Parser();
     // parses the response data from the API using the xml2js library.
