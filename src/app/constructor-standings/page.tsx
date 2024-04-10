@@ -14,6 +14,7 @@ interface ConstructorStanding {
 const Page = () => {
   var xml2js = require('xml2js')
   const [loading, setLoading] = useState(false);
+  const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [round, setRound] = useState('1');
   const [constructorStandings, setConstructorStandings] = useState<ConstructorStanding[]>([]);
@@ -23,7 +24,7 @@ const Page = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get(`http://ergast.com/api/f1/${year}/${round}/constructorStandings`);
+      const response = await axios.get(`https://ergast.com/api/f1/${year}/${round}/constructorStandings`);
       const parser = new xml2js.Parser();
       const result = await parser.parseStringPromise(response.data);
       const standingsList = result.MRData.StandingsTable[0].StandingsList[0].ConstructorStanding;
@@ -45,15 +46,25 @@ const Page = () => {
 
   useEffect(() => {
     fetchConstructorData();
-  }, [year, round]);
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetchConstructorData();
+    if (year >= '1950' && year <= currentYear.toString()) {
+      fetchConstructorData();
+    } else {
+      setError('Please enter a year between 1950 and the current year.');
+    }
   };
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setYear(e.target.value);
+    const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || (!isNaN(parseInt(value)))) {
+      setError('');
+      setYear(value);
+    } else {
+      setError('Please enter a valid year.'); 
+    }
   };
 
   const handleRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,17 +85,48 @@ const Page = () => {
 
   return(
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Year:
-          <input type="number" value={year} onChange={handleYearChange} className='text-black'/>
-        </label>
-        <label>
-          Round:
-          <input type="number" value={round} onChange={handleRoundChange} className='text-black'/>
-        </label>
-        <button type="submit">Submit</button>
+       <form
+        onSubmit={handleSubmit}
+        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md"
+      >
+        <div className="mb-4">
+          <label className="block mb-2 font-bold " htmlFor="year">
+            Year:
+          </label>
+          <input
+            type="number"
+            id="year"
+            value={year}
+            onChange={handleYearChange}
+            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+            min="1950"
+            max={currentYear}
+          />
+        </div>
+        
+        <div className="mb-6">
+          <label className="block mb-2 font-bold" htmlFor="round">
+            Round:
+          </label>
+          <input
+            type="number"
+            id="round"
+            value={round}
+            onChange={handleRoundChange}
+            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-4">
+        {error && <div className="text-center text-red-500">{error}</div>}
+        </div>
+        <button
+          type="submit"
+          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+        >
+          Submit
+        </button>
       </form>
+      
       <Table>
         <TableHeader>
           <TableColumn>Position</TableColumn>

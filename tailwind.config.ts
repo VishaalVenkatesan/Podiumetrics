@@ -17,7 +17,12 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       darkMode: "class",
-      plugins: [nextui()],
+      plugins: [
+        nextui({
+          layout: { 
+          spacingUnit: 2,
+          }
+        })],
        fontFamily: {
         carlson : ['Carlson', 'sans-serif'],
         serif : ['PT-Serif', 'serif'],  

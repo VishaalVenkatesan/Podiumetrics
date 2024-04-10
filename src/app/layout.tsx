@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Navbar, Footer} from "../components/index"
+import { Nav, Footer} from "../components/index"
 import {Providers} from "./providers";
 import "./globals.css";
 
@@ -15,9 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="pl-[30px] ">
+      <body className="pl-[30px] pr-[30px]">
         <Providers>
-        <Navbar />
+        <Nav />
         {children}
         <Footer />
         </Providers>

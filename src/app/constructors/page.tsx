@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { useState, useEffect } from "react";
+import CountryImage from "../../components/CountryImage"; 
 
 interface Constructor {
   constructorId: string[];
@@ -15,6 +16,7 @@ interface Constructor {
 const Page = () => {
   var xml2js = require('xml2js'); 
   const [year, setYear] = useState(new Date().getFullYear().toString());
+  const currentYear = new Date().getFullYear();
   //Type array that will store the constructor data fetched from the API
   const [constructors, setConstructors] = useState<Constructor[]>([]);
   const [loading, setLoading] = useState(false);
@@ -32,14 +34,16 @@ const fetchData = async () => {
     // parses the response data from the API using the xml2js library.
     const result = await parser.parseStringPromise(response.data);
     //any type for now, since we don't know its exact structure yet.
-    const constructorData = result.MRData.ConstructorTable[0].Constructor.map((constructor: any) => ({
-      constructorId: constructor.$.constructorId,
-      name: constructor.Name[0],
-      nationality: constructor.Nationality[0],
-      $: {
-        url: constructor.$.url,
-      },
-    }));
+    const constructorData = result.MRData.ConstructorTable[0].Constructor.map((constructor: any) => {
+  return {
+    constructorId: constructor.$.constructorId,
+    name: constructor.Name[0],
+    nationality: constructor.Nationality[0],
+    $: {
+      url: constructor.$.url,
+    },
+  };
+  });
 
     setConstructors(constructorData);
   } catch (error) {
@@ -64,16 +68,16 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     fetchData();
   }
 };
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '' || (!isNaN(parseInt(value)))) {
+      setError('');
+      setYear(value);
+    } else {
+      setError('Please enter a valid year.'); 
+    }
+  };
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const value = e.target.value;
-  if (value === '' || (!isNaN(parseInt(value)))) {
-    setError('');
-    setYear(value);
-  } else {
-    setError('Please enter a valid year.'); 
-  }
-};
 
   if (loading) {
     return (
@@ -90,25 +94,41 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   return (
     <div>
       <div className="pt-[40px]">
-        <h1>ENTER YOUR DESIRED YEAR</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}  className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
+          <div className="mb-4">
+          <label className="block mb-2 font-bold " htmlFor="year">
+            Year:
+          </label>
           <input
             type="number"
+            id="year"
             value={year}
-            name="year"
-            onChange={handleChange}
-            className='w-auto p-2 text-xl text-black rounded'
+            onChange={handleYearChange}
+            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+            min="1950"
+            max={currentYear}
           />
+        </div>
           {error && <span className="ml-2 text-red-500">{error}</span>}
-          <button type="submit" className='w-auto p-2 ml-3 text-xl font-extrabold text-black bg-blue-200 border-white rounded hover:bg-blue-400'>SUBMIT</button>
+         <button
+          type="submit"
+            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+         >
+         Submit
+       </button>
         </form>
       </div>
-      <div className="grid grid-cols-3 gap-4 font-roboto">
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
         {constructors.map((constructor, index) => (
-          <div key={index} className='p-6 text-center text-xl text-black bg-white rounded-[20px] m-3 flex flex-col gap-y-7'>
-            <h2 className=''>{constructor.name.toUpperCase()}</h2>
-            <p>{constructor.nationality}</p>
-            <a href={constructor.$.url} className='text-blue-700'>More info</a>
+          <div key={index} className='p-6 text-center text-xl bg-gray-900 rounded-[20px] m-3 flex flex-col gap-y-7 hover:bg-gray-700 focus:outline-none focus:shadow-outline'
+           >
+            <h2 className='text-3xl font-bold font-mutuka'>{constructor.name.toUpperCase()}</h2>
+            <p className='font-semibold font-carlson'>{constructor.nationality}</p>
+            <CountryImage nationality={constructor.nationality} />
+            <a href={constructor.$.url} className='font-mono font-bold text-red-800 text-pretty'
+             target="_blank"
+              rel="noopener noreferrer">
+              More info</a>
           </div>
         ))}
       </div>
