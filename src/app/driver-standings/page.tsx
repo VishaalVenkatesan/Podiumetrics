@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import CountryImage from '@/components/CountryImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { fetchRound, Race } from '../utils/fetchRound';
 
 interface Driver {
   driverId: string[];
@@ -41,6 +44,10 @@ const Page = () => {
   const [standings, setStandings] = useState<Standing[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedRace, setSelectedRace] = useState<Race | null>(null);
+  const [circuits, setCircuits] = useState<Race[]>([]);
+  const [races, setRaces] = useState<Race[]>([]);
+
 
   const fetchData = async () => {
     setLoading(true);
@@ -76,43 +83,47 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (year >= '1950' && year <= currentYear.toString()) {
-      fetchData();
-    } else {
-      setError('Please enter a year between 1950 and the current year.');
+  const fetchCircuitData = async () => {
+    const circuitData = await fetchRound(setError, year);
+    if (circuitData) {
+      setCircuits(circuitData);
+      setSelectedRace(circuitData[0]); // Select the first race by default
     }
   };
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === '' || (!isNaN(parseInt(value)))) {
-      setError('');
-      setYear(value);
-    } else {
-      setError('Please enter a valid year.'); 
-    }
-  };
+  fetchCircuitData();
+}, [year, setError]);
 
-  const handleRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRound(e.target.value);
-  };
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="200" height="150">
-          <path fill="none" stroke="#1118FF" strokeWidth="15" strokeLinecap="round" strokeDasharray="300 385" strokeDashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z">
-            <animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate>
-          </path>
-        </svg>
-      </div>
-    );
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if (!selectedRace) {
+    setError('This Event has still not occurred');
+    return;
   }
+  fetchData();
+};
+const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedRound = e.target.value;
+  const selectedRace = circuits.find(
+    (circuit) => circuit.round.toString() === selectedRound
+  );
+  setSelectedRace(selectedRace || null);
+  setRound(selectedRound); // Set the round according to the selected race
+};
+
+useEffect(() => {
+  fetchData(); // Fetch data whenever the round changes
+}, [round]);
+
+const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear: React.Dispatch<React.SetStateAction<string>>, setError: React.Dispatch<React.SetStateAction<string>>) => {
+  const selectedYear = e.target.value;
+  setYear(selectedYear);
+  const fetchedRaces = await fetchRound(setError, selectedYear);
+  setRaces(fetchedRaces || []);
+};
+
+
+
 
   return (
     <div>
@@ -128,57 +139,77 @@ const Page = () => {
             type="number"
             id="year"
             value={year}
-            onChange={handleYearChange}
+            onChange={(e) => handleYearChange(e, setYear, setError)}
             className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
             min="1950"
             max={currentYear}
           />
         </div>
 
-        <div className="mb-6">
-          <label className="block mb-2 font-bold" htmlFor="round">
-            Round:
+         <label className="block mb-2 font-bold" htmlFor="race">
+          Race:
           </label>
-          <input
-            type="number"
-            id="round"
-            value={round}
-            onChange={handleRoundChange}
-            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
+          <select
+           id="race"
+           value={selectedRace ? selectedRace.round : ''}
+           onChange={handleRaceChange}
+            className="w-full px-3 py-2 mb-3 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+          >
+            {circuits.map((race) => (
+              <option key={race.round} value={race.round}>
+                {race.RaceName[0]} ({race.Circuit[0].CircuitName[0]})
+              </option>
+           ))}
+          </select>
         <button
           type="submit"
-          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+          className="py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>
       </form>
-      {error && <div className="text-center text-red-500">{error}</div>}
-      <Table aria-label="Standings table">
+      <div>
+      {error ? (
+        <div className="text-center text-red-500">{error}</div>
+      )
+        :loading ? (
+          <div className="flex items-center justify-center">
+           <LoadingSpinner />
+            </div>
+          ):(
+       <div className="">
+        <h1 className='mb-4 text-2xl font-extrabold text-center font-mutuka'>World Drivers Championship</h1>
+      <Table isStriped aria-label="Standings table"  className='text-xl font-carlson '>
         <TableHeader>
-          <TableColumn>Position</TableColumn>
-          <TableColumn>Number</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Constructor Name</TableColumn>
-          <TableColumn>Points</TableColumn>
-          <TableColumn>Wins</TableColumn>
+          <TableColumn className='text-center'>Position</TableColumn>
+          <TableColumn className='text-center'>Nationality</TableColumn>
+          <TableColumn className='text-center'>Number</TableColumn>
+          <TableColumn className='text-center'>Name</TableColumn>
+          <TableColumn className='text-center'>Constructor Name</TableColumn>
+          <TableColumn className='text-center'>Points</TableColumn>
+          <TableColumn className='text-center'>Wins</TableColumn>
         </TableHeader>
         <TableBody>
           {standings.map((standing, index) => (
             <TableRow key={index}>
-              <TableCell>{standing.position}</TableCell>
-              <TableCell>{drivers[index]?.PermanentNumber || '-'}</TableCell>
-              <TableCell>{drivers[index]?.GivenName?.[0]} {drivers[index]?.FamilyName?.[0]}</TableCell>
-              <TableCell>{constructors[index]?.name?.[0]}</TableCell>
-              <TableCell>{standing.points}</TableCell>
-              <TableCell>{standing.wins}</TableCell>
+              <TableCell className='text-center'>{standing.position}</TableCell>
+              <TableCell className='flex items-center justify-center align-center'>
+                <CountryImage
+                  nationality={drivers[index]?.Nationality?.[0]} size={30}/>
+                  </TableCell>
+              <TableCell className='text-center'>{drivers[index]?.PermanentNumber || '-'}</TableCell>
+              <TableCell className='text-center'>{drivers[index]?.GivenName?.[0]} {drivers[index]?.FamilyName?.[0]}</TableCell>
+              <TableCell className='text-center'>{constructors[index]?.name?.[0]}</TableCell>
+              <TableCell className='text-center'>{standing.points}</TableCell>
+              <TableCell className='text-center'>{standing.wins}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </div>
+      </div>
+          )}
+          </div>
+  </div>
   );
 }
 

@@ -2,7 +2,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-
+import CountryImage from '@/components/CountryImage';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { handleYearChange } from '../utils/handleYearChange';
+import { fetchRound, Race } from '../utils/fetchRound';
 interface ConstructorStanding {
   position: number;
   points: number;
@@ -12,17 +15,20 @@ interface ConstructorStanding {
 }
 
 const Page = () => {
-  var xml2js = require('xml2js')
-  const [loading, setLoading] = useState(false);
+  const xml2js = require('xml2js');
   const currentYear = new Date().getFullYear();
-  const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [year, setYear] = useState(currentYear.toString());
   const [round, setRound] = useState('1');
   const [constructorStandings, setConstructorStandings] = useState<ConstructorStanding[]>([]);
-  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [selectedRace, setSelectedRace] = useState<Race | null>(null);
+  const [circuits, setCircuits] = useState<Race[]>([]);
 
   const fetchConstructorData = async () => {
     setLoading(true);
     setError('');
+
     try {
       const response = await axios.get(`https://ergast.com/api/f1/${year}/${round}/constructorStandings`);
       const parser = new xml2js.Parser();
@@ -34,7 +40,8 @@ const Page = () => {
         wins: parseInt(standing.$.wins),
         name: standing.Constructor[0].Name[0],
         nationality: standing.Constructor[0].Nationality[0]
-  }));
+      }));
+
       setConstructorStandings(constructorStandings);
     } catch (error) {
       setError('Error fetching data. Please try again later.');
@@ -43,10 +50,21 @@ const Page = () => {
       setLoading(false);
     }
   };
+    useEffect(() => {
+    const fetchCircuitData = async () => {
+      const circuitData = await fetchRound(setError, year);
+      if (circuitData) {
+        setCircuits(circuitData);
+        setSelectedRace(circuitData[0]); // Select the first race by default
+      }
+    };
+
+    fetchCircuitData();
+  }, [year, setError]);
 
   useEffect(() => {
-    fetchConstructorData();
-  }, []);
+    fetchConstructorData(); // Fetch data whenever the round changes
+  }, [round]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,32 +74,19 @@ const Page = () => {
       setError('Please enter a year between 1950 and the current year.');
     }
   };
+  const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedRound = e.target.value;
+  const selectedRace = circuits.find(
+    (circuit) => circuit.round.toString() === selectedRound
+  );
+  setSelectedRace(selectedRace || null);
+  setRound(selectedRound); // Set the round according to the selected race
+};
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === '' || (!isNaN(parseInt(value)))) {
-      setError('');
-      setYear(value);
-    } else {
-      setError('Please enter a valid year.'); 
-    }
-  };
 
   const handleRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRound(e.target.value);
   };
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" width="200" height="150">
-          <path fill="none" stroke="#1118FF" strokeWidth="15" strokeLinecap="round" strokeDasharray="300 385" strokeDashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z">
-            <animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate>
-          </path>
-        </svg>
-      </div>
-    );
-  }
 
   return(
     <div>
@@ -97,7 +102,7 @@ const Page = () => {
             type="number"
             id="year"
             value={year}
-            onChange={handleYearChange}
+            onChange={(e) => handleYearChange(e, setYear, setError)}
             className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
             min="1950"
             max={currentYear}
@@ -105,49 +110,67 @@ const Page = () => {
         </div>
         
         <div className="mb-6">
-          <label className="block mb-2 font-bold" htmlFor="round">
-            Round:
+         <label className="block mb-2 font-bold" htmlFor="race">
+          Race:
           </label>
-          <input
-            type="number"
-            id="round"
-            value={round}
-            onChange={handleRoundChange}
+          <select
+           id="race"
+           value={selectedRace ? selectedRace.round : ''}
+           onChange={handleRaceChange}
             className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
-          />
+          >
+            {circuits.map((race) => (
+              <option key={race.round} value={race.round}>
+                {race.RaceName[0]} ({race.Circuit[0].CircuitName[0]})
+              </option>
+           ))}
+          </select>
         </div>
-        <div className="mb-4">
-        {error && <div className="text-center text-red-500">{error}</div>}
+        <div className="mt-4">
         </div>
+        <div className="mb-5">
         <button
           type="submit"
           className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>
+        </div>
       </form>
-      
-      <Table>
-        <TableHeader>
-          <TableColumn>Position</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Nationality</TableColumn>
-          <TableColumn>Points</TableColumn>
-          <TableColumn>Wins</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {constructorStandings.map((standing, index) => (
-            <TableRow key={index}>
-              <TableCell>{standing.position}</TableCell>
-              <TableCell>{standing.name}</TableCell>
-              <TableCell>{standing.nationality}</TableCell>
-              <TableCell>{standing.points}</TableCell>
-              <TableCell>{standing.wins}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+     {error ? (
+  <div className="text-center text-red-500">{error}</div>
+) : loading ? (
+  <div className="flex items-center justify-center">
+    <LoadingSpinner />
+  </div>
+) : (
+  <div className="">
+    <h1 className='mb-4 text-3xl font-extrabold text-center font-mutuka' >World Constructor Championship </h1>
+    <Table className='font-mono text-2xl text-center'>
+      <TableHeader>
+        <TableColumn className='text-center'>Position</TableColumn>
+        <TableColumn className='text-center'>Name</TableColumn>
+        <TableColumn className='text-center'>Team</TableColumn>
+        <TableColumn className='text-center'>Points</TableColumn>
+        <TableColumn className='text-center'>Wins</TableColumn>
+      </TableHeader>
+      <TableBody className=''>
+        {constructorStandings.map((standing, index) => (
+          <TableRow key={index}>
+            <TableCell className='text-center'>{standing.position}</TableCell>
+            <TableCell className='flex items-center justify-center align-center'> 
+              <CountryImage nationality={standing.nationality} size={30}/>
+            </TableCell>
+            <TableCell className='text-center'>{standing.name}</TableCell>
+            <TableCell className='text-center'>{standing.points}</TableCell>
+            <TableCell className='text-center'>{standing.wins}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
+)}
+</div>
   );
 }
 

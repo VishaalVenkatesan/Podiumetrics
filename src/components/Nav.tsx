@@ -16,7 +16,7 @@ const Nav = () => {
           <Link href="/" className="font-mono text-2xl font-bold">Podiumetrics</Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="hidden space-x-[30px] sm:flex justify-center">
+      <NavbarContent className="hidden space-x-[50px] sm:flex justify-center font-mono text-[15px] font-bold">
         <NavbarItem>
           <Link color="foreground" href="/drivers">Drivers</Link>
         </NavbarItem>
@@ -27,16 +27,16 @@ const Nav = () => {
           <DropdownTrigger>
             <Button variant="bordered">Standings</Button>
           </DropdownTrigger>
-          <DropdownMenu aria-label="Action event example" className="text-black bg-white">
-            <DropdownItem key="drivers" href="/driver-standings">Drivers</DropdownItem>
-            <DropdownItem key="constructors" href="/constructor-standings">Constructors</DropdownItem>
+          <DropdownMenu aria-label="Action event example" className="text-[18px] text-black bg-red-600 rounded font-mutuka">
+            <DropdownItem key="drivers" href="/driver-standings" className="font-extrabold hover:text-zinc-800 hover:underline">Drivers</DropdownItem>
+            <DropdownItem key="constructors" href="/constructor-standings" className="hover:text-zinc-800 hover:underline">Constructors</DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <NavbarItem>
           <Link color="foreground" href="/calender">Calender</Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className="space-y-4">
+      <NavbarMenu className="space-y-2">
         <NavbarMenuItem>
           <Link className="py-2 pt-8 text-2xl font-extrabold font-mutuka" href="/drivers">Drivers</Link>
         </NavbarMenuItem>
