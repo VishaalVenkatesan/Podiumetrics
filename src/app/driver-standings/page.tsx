@@ -5,6 +5,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import CountryImage from '@/components/CountryImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
+import {Select, SelectSection, SelectItem} from "@nextui-org/react";
 
 interface Driver {
   driverId: string[];
@@ -149,18 +150,19 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
          <label className="block mb-2 font-bold" htmlFor="race">
           Race:
           </label>
-          <select
+          <Select
            id="race"
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
-            className="w-full px-3 py-2 mb-3 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+           label="Select an grandprix"  
+           
           >
             {circuits.map((race) => (
-              <option key={race.round} value={race.round}>
+              <SelectItem  key={race.round} value={race.round}>
                 {race.RaceName[0]} ({race.Circuit[0].CircuitName[0]})
-              </option>
+              </SelectItem>
            ))}
-          </select>
+          </Select>
         <button
           type="submit"
           className="py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"

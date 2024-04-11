@@ -14,7 +14,7 @@ export const fetchRound = async (
   year: string
 ): Promise<Race[] | undefined> => {
   try {
-    const response = await axios.get(`http://ergast.com/api/f1/${year}.xml`);
+    const response = await axios.get(`https://ergast.com/api/f1/${year}.xml`);
     const parser = new xml2js.Parser();
     const result = await parser.parseStringPromise(response.data);
     const races: Race[] = result.MRData.RaceTable[0].Race.map((race: any) => ({
