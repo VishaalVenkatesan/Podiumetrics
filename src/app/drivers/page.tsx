@@ -1,14 +1,10 @@
 "use client"
-
 import axios from 'axios';
 import {Link} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import CountryImage  from "../../components/CountryImage";
-import {Input} from "@nextui-org/react";
-import { warning } from 'framer-motion';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { handleYearChange } from '../utils/handleYearChange';
-import {reverseDate, calculateAge} from '../utils/ageUtils'
+import {reverseDate} from '../utils/ageUtils'
 
 interface Driver {
   GivenName: string[];
@@ -22,11 +18,11 @@ interface Driver {
 
 const Page = () => {
   const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [showAge, setShowAge] = useState(true);
   var xml2js = require('xml2js');
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-   const [imageURL, setImageURL] = useState<string>('');
 
   const fetchData = async () => {
     setLoading(true);
@@ -46,40 +42,41 @@ const Page = () => {
     } finally {
       setLoading(false);
     }
-  
   };
 
   useEffect(() => {
     fetchData();
   },[]); // Empty dependency array means this effect runs once on mount
 
+  useEffect(() => {
+  },[drivers]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const parsedYear = parseInt(year);
-    if (parsedYear < 1950 || parsedYear > new Date().getFullYear()) {
-      setError('Please enter a valid year between 1950 and the current year.');
-    } else {
-      setError('');
-      fetchData();
-    }
+    fetchData();
+    setShowAge(true);
   };
+
+  const calculateAge = (dateOfBirth: string) => {
+    const age = Number(year) - new Date(dateOfBirth).getFullYear()
+    return age;
+  }
 
   return (
     <div>
       <div className="pt-[40px]">
         <form onSubmit={handleSubmit} className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
-          <div className="mb-4">
             <h1 className='mb-6 text-3xl font-bold text-center font-mutuka'>DRIVERS</h1>
-            <label className="block mb-2 font-bold text-11 font-mutuka" htmlFor="year">
-              Enter the Year:
-            </label>
-            <Input
-              type="number"
-              id="year"
-              value={year}
-              onChange={(e) => handleYearChange(e, setYear, setError)}
-            />
-          </div>
+              <select 
+                value={year} 
+                onChange={(e) => {setYear(e.target.value); setShowAge(false);}}
+                className='p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                >
+              {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
+              <option key={year} value={year}>{year}</option>
+               ))}
+            </select>
           <div className="pt-2 pb-5 text-center">
           {error && <span className="text-red-500 ">{error}</span>}
           </div>
@@ -104,7 +101,7 @@ const Page = () => {
             <h2 className='text-3xl font-bold font-mutuka'>{driver.GivenName[0]} {driver.FamilyName[0]}</h2>
               <CountryImage nationality={driver.Nationality[0]} />
             <p>Date of Birth: {reverseDate(driver.DateOfBirth[0])}</p>
-            <p>Age: {calculateAge(driver.DateOfBirth[0])}</p>
+            {showAge && <p>Age: {calculateAge(driver.DateOfBirth[0])}</p>}
             <div className="flex items-center justify-center">
             <Link isExternal href={driver.$.url} className='font-mono font-bold text-center'
               showAnchorIcon
@@ -117,8 +114,6 @@ const Page = () => {
         </div>
       )}
       </div>
-
-    
   );
 }
 

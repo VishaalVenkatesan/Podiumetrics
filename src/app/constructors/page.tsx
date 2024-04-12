@@ -47,7 +47,6 @@ const fetchData = async () => {
     },
   };
   });
-
     setConstructors(constructorData);
   } catch (error) {
     setError('Error fetching data. Please try again later.');
@@ -59,16 +58,11 @@ const fetchData = async () => {
 
 
 
-const handleYearSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const parsedYear = parseInt(year);
-  if (parsedYear < 1950 || parsedYear > new Date().getFullYear()) {
-    setError('Please enter a valid year between 1950 and the current year.');
-  } else {
-    setError('');
-    fetchData();
-  }
-};
+   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const parsedYear = parseInt(year);
+      fetchData();
+  };
   useEffect(() => { 
     fetchData();
   },[])
@@ -77,20 +71,19 @@ const handleYearSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   return (
     <div>
       <div className="pt-[40px]">
-        <form onSubmit={handleYearSubmit}  className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
+        <form onSubmit={handleSubmit}  className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
+          <h1 className='mb-6 text-3xl font-bold text-center font-mutuka'>CONSTRUCTORS</h1>
           <div className="mb-4">
-          <label className="block mb-2 font-bold " htmlFor="year">
-            Year:
-          </label>
-          <input
-            type="number"
-            id="year"
-            value={year}
-            onChange={(e) => handleYearChange(e, setYear, setError)}
-            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
-            min="1950"
-            max={currentYear}
-          />
+               <select 
+                value={year} 
+                onChange={(e) => setYear(e.target.value)}
+                className='w-full p-2 mb-3 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                >
+              {Array.from({length: new Date().getFullYear() - 1950 + 1},
+               (_, i) => new Date().getFullYear() - i).map((year) => (
+              <option key={year} value={year}>{year}</option>
+               ))}
+            </select>
         </div>
           
           {error && <span className="ml-2 text-red-500">{error}</span>}

@@ -76,7 +76,7 @@ const Page = () => {
       setConstructors(constructors);
       setStandings(standings);
     } catch (error) {
-      setError('Error fetching data. Please try again later.');
+      setError('This Event has not occurred yet. Please try again later.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -98,7 +98,7 @@ const Page = () => {
 const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   if (!selectedRace) {
-    setError('This Event has still not occurred');
+    setError('Error fetching data. Please try again later.');
     return;
   }
   fetchData();
@@ -150,19 +150,19 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
          <label className="block mb-2 font-bold" htmlFor="race">
           Race:
           </label>
-          <Select
+          <select
            id="race"
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
-           label="Select an grandprix"  
-           
+           name='round' 
+           className='p-3 mb-8'
           >
             {circuits.map((race) => (
-              <SelectItem  key={race.round} value={race.round}>
+              <option  key={race.round} value={race.round}>
                 {race.RaceName[0]} ({race.Circuit[0].CircuitName[0]})
-              </SelectItem>
+              </option>
            ))}
-          </Select>
+          </select>
         <button
           type="submit"
           className="py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"

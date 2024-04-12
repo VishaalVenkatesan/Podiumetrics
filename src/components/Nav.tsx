@@ -23,6 +23,9 @@ const Nav = () => {
         <NavbarItem >
           <Link href="/constructors" >Constructors</Link>
         </NavbarItem>
+         <NavbarItem>
+          <Link color="foreground" href="/results">Results</Link>
+        </NavbarItem>
         <Dropdown>
           <DropdownTrigger>
             <Button variant="bordered">Standings</Button>
@@ -33,7 +36,7 @@ const Nav = () => {
           </DropdownMenu>
         </Dropdown>
         <NavbarItem>
-          <Link color="foreground" href="/calender">Calender</Link>
+          <Link color="foreground" href="/tracks">Tracks</Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu className="space-y-2">
@@ -44,13 +47,19 @@ const Nav = () => {
           <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/constructors">Constructors</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
+          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/results">Results</Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem>
           <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/driver-standings">Driver Standings</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
           <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/constructor-standings">Constructor Standings</Link>
         </NavbarMenuItem>
+         <NavbarMenuItem>
+          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/results">Results</Link>
+        </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/calender">Calender</Link>
+          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/tracks">Tracks</Link>
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
