@@ -76,7 +76,7 @@ const Page = () => {
       setConstructors(constructors);
       setStandings(standings);
     } catch (error) {
-      setError('This Event has not occurred yet. Please try again later.');
+      setError('Well, this is awkward. I wish i could predict the future.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -123,39 +123,27 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
   setRaces(fetchedRaces || []);
 };
 
-
-
-
   return (
     <div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md"
+        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md gap-y-6"
       >
-        <div className="mb-4">
-          <label className="block mb-2 font-bold " htmlFor="year">
-            Year:
-          </label>
-          <input
-            type="number"
-            id="year"
-            value={year}
-            onChange={(e) => handleYearChange(e, setYear, setError)}
-            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
-            min="1950"
-            max={currentYear}
-          />
-        </div>
-
-         <label className="block mb-2 font-bold" htmlFor="race">
-          Race:
-          </label>
+           <select 
+                value={year} 
+                onChange={(e) => {setYear(e.target.value)}}
+                className='w-full p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                >
+              {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
+              <option key={year} value={year}>{year}</option>
+               ))}
+            </select>
           <select
            id="race"
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
            name='round' 
-           className='p-3 mb-8'
+           className='w-full p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
           >
             {circuits.map((race) => (
               <option  key={race.round} value={race.round}>
@@ -172,7 +160,9 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
       </form>
       <div>
       {error ? (
-        <div className="text-center text-red-500">{error}</div>
+        <div className= "flex flex-col ">
+        <div className="text-4xl font-extrabold text-center text-blue-500 font-carlson mt-[50px]">{error}</div>
+        </div>
       )
         :loading ? (
           <div className="flex items-center justify-center">

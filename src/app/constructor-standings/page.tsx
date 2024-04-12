@@ -92,32 +92,22 @@ const Page = () => {
     <div>
        <form
         onSubmit={handleSubmit}
-        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md"
+        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md gap-y-6"
       >
-        <div className="mb-4">
-          <label className="block mb-2 font-bold " htmlFor="year">
-            Year:
-          </label>
-          <input
-            type="number"
-            id="year"
-            value={year}
-            onChange={(e) => handleYearChange(e, setYear, setError)}
-            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
-            min="1950"
-            max={currentYear}
-          />
-        </div>
-        
-        <div className="mb-6">
-         <label className="block mb-2 font-bold" htmlFor="race">
-          Race:
-          </label>
+           <select 
+                value={year} 
+                onChange={(e) => {setYear(e.target.value)}}
+                className='w-full p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                >
+              {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
+              <option key={year} value={year}>{year}</option>
+               ))}
+            </select>
           <select
            id="race"
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
-            className="w-full px-3 py-2 leading-tight border rounded appearance-none focus:outline-none focus:shadow-outline"
+            className='w-full p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
           >
             {circuits.map((race) => (
               <option key={race.round} value={race.round}>
@@ -125,17 +115,12 @@ const Page = () => {
               </option>
            ))}
           </select>
-        </div>
-        <div className="mt-4">
-        </div>
-        <div className="mb-5">
         <button
           type="submit"
-          className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+          className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>
-        </div>
       </form>
      {error ? (
   <div className="text-center text-red-500">{error}</div>
@@ -144,12 +129,12 @@ const Page = () => {
     <LoadingSpinner />
   </div>
 ) : (
-  <div className="">
+  <div className="mt-10">
     <h1 className='mb-4 text-3xl font-extrabold text-center font-mutuka' >World Constructor Championship </h1>
-    <Table className='font-mono text-2xl text-center'>
+    <Table className='font-mono text-2xl text-center mt-7'>
       <TableHeader>
         <TableColumn className='text-center'>Position</TableColumn>
-        <TableColumn className='text-center'>Name</TableColumn>
+        <TableColumn className='text-center'> </TableColumn>
         <TableColumn className='text-center'>Team</TableColumn>
         <TableColumn className='text-center'>Points</TableColumn>
         <TableColumn className='text-center'>Wins</TableColumn>

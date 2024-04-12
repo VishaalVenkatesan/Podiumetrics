@@ -15,12 +15,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="pl-[30px] pr-[30px]">
+      <body>
+        <div className="relative flex flex-col min-h-screen pb-20">
         <Providers>
         <Nav />
         {children}
+        <div className="mt-auto">
+         <div className="absolute bottom-0 w-full footer">
         <Footer />
+        </div>
+        </div>
         </Providers>
+        </div>
         </body>
     </html>
   );

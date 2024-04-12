@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="flex flex-row mt-[50px] mb-[20px] ">
+    <div className="mb-[20px] mt-auto">
       <h2 className="text-center ">© 2024 Podiumetrics dream big</h2>
       </div>
   )
