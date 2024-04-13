@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const fetchCountry = async (name: string) => {
-    const nationalityIndex = name === 'French' ? 2 : (name === 'China' ? 1 : 0);
+    const nationalityIndex = name === 'China' ? 1 : 0;
     if(name === 'UK') name = 'United Kingdom'; 
     if(name === 'United States') name = 'United States of America'; 
     try {
