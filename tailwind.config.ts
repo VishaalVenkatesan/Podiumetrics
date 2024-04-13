@@ -28,7 +28,8 @@ const config: Config = {
         serif : ['PT-Serif', 'serif'],  
         mutuka: ['Mukta', 'sans-serif'],
         lora: ['Lora','serif'],
-        roboto: ['Roboto', 'sans-serif']
+        roboto: ['Roboto', 'sans-serif'],
+        rockwell: ['Rockwell', 'serif'],
        },
         screens: {
             xs: "480px",

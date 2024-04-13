@@ -35,7 +35,7 @@ const fetchData = async () => {
   setError('');
 
   try {
-    const response = await axios.get(`http://ergast.com/api/f1/${year}/circuits`);
+    const response = await axios.get(`https://ergast.com/api/f1/${year}/circuits`);
     const parser = new xml2js.Parser();
     const result = await parser.parseStringPromise(response.data);
 

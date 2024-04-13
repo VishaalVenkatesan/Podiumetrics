@@ -6,17 +6,18 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <Navbar shouldHideOnScroll className="pt-3" onMenuOpenChange={setIsMenuOpen}>
+    <div className="pt-5">
+    <Navbar shouldHideOnScroll  onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className="md:hidden"
         />
         <NavbarBrand >
-          <Link href="/" className="font-mono text-2xl font-bold">Podiumetrics</Link>
+          <Link href="/" className="pt-3 pl-5 md:pl-0 text-4xl font-bold font-rockwell md:pr-[200px]">Podiumetrics</Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="hidden space-x-[50px] sm:flex justify-center font-mono text-[15px] font-bold">
+      <NavbarContent className="hidden space-x-[50px] md:flex justify-center font-mutuka text-[20px]">
         <NavbarItem>
           <Link color="foreground" href="/drivers">Drivers</Link>
         </NavbarItem>
@@ -39,27 +40,28 @@ const Nav = () => {
           <Link color="foreground" href="/tracks">Tracks</Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className="space-y-2">
+      <NavbarMenu className="space-y-5">
         <NavbarMenuItem>
-          <Link className="py-2 pt-8 text-2xl font-extrabold font-mutuka" href="/drivers">Drivers</Link>
+          <Link className="p-2 pt-10 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/drivers">Drivers</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/constructors">Constructors</Link>
+          <Link className="p-2 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/constructors">Constructors</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/results">Results</Link>
+          <Link className="p-2 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/results">Results</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/driver-standings">Driver Standings</Link>
+          <Link className="p-2 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/driver-standings">Driver Standings</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/constructor-standings">Constructor Standings</Link>
+          <Link className="p-2 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/constructor-standings">Constructor Standings</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/tracks">Tracks</Link>
+          <Link className="p-2 text-2xl font-bold text-gray-300 transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/tracks">Tracks</Link>
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
+    </div>
   )
 }
 
