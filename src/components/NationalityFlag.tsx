@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchCountry } from '../app/utils/fetchCountry'
+import { fetchNational } from '../app/utils/fetchNational'
 import Image from 'next/image';
 
 interface CountryImageProps {
@@ -11,7 +11,7 @@ const CountryImage: React.FC<CountryImageProps> = ({ nationality, size = 100 }) 
   const [imageURL, setImageURL] = useState<string>('');
 
   useEffect(() => {
-    fetchCountry(nationality)
+    fetchNational(nationality)
       .then(flags => {
         if (flags) {
           setImageURL(flags.svg);

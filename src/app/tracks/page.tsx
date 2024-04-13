@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {Link} from "@nextui-org/react";
+import CountryFlag from '@/components/CountryFlag';
 
 interface Circuit {
   CircuitName: string[];
@@ -30,7 +31,7 @@ const Page = () => {
 
   const [circuits, setCircuits] = useState<Circuit[]>([]);
 
-const fetchData = async () => {
+const fetchData = async (year : string) => {
   setLoading(true);
   setError('');
 
@@ -50,25 +51,25 @@ const fetchData = async () => {
   }
 };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleYearChange= (e: React.ChangeEvent<HTMLSelectElement>)=> {
     e.preventDefault();
-    const parsedYear = parseInt(year);
-    fetchData();
+    const selectedYear = e.target.value;
+  setYear(selectedYear);
+    fetchData(selectedYear);
   };
 
 useEffect(() => {
-  fetchData();
+  fetchData(year);
 }, []); 
   
   return (
   <div>
-     <div className="pt-[40px]">
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
-            <h1 className='mb-6 text-3xl font-bold text-center font-mutuka'>CIRCUITS</h1>
+     <div className="pt-[80px] flex items-center justify-center flex-col">
+            <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>CIRCUITS</h1>
               <select 
                 value={year} 
-                onChange={(e) => {setYear(e.target.value)}}
-                className='p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                onChange={handleYearChange}
+                className='p-2 w-[200px] font-mono text-2xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -77,13 +78,6 @@ useEffect(() => {
           <div className="pt-2 pb-5 text-center">
           {error && <span className="text-red-500 ">{error}</span>}
           </div>
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded ont-bold hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-          >
-            Submit
-          </button>
-        </form>
       </div>
       
     {loading ? (
@@ -95,7 +89,8 @@ useEffect(() => {
         {circuits.map((circuit, index) => (
           <div key={index} className='p-6 text-center text-xl bg-gray-900 rounded-[20px] m-3 flex flex-col gap-y-7 focus:outline-none focus:shadow-outline'>
             <h2 className='text-3xl font-bold font-mutuka'>{circuit.CircuitName[0]}</h2>
-            <p>Location: {circuit.Location[0].Locality[0]}, {circuit.Location[0].Country[0]}</p>
+             <CountryFlag name={circuit.Location[0].Country[0]} />
+            <p> {circuit.Location[0].Locality[0]}, {circuit.Location[0].Country[0]}</p>
             <p>Latitude: {circuit.Location[0].$.lat}, Longitude: {circuit.Location[0].$.long}</p>
             <div className="flex items-center justify-center">
               <Link isExternal href={circuit.$.url} className='font-mono font-bold text-center'

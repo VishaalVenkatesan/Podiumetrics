@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { useState, useEffect } from "react";
-import CountryImage from "../../components/CountryImage"; 
+import CountryImage from "../../components/NationalityFlag"; 
 import {Link} from "@nextui-org/react";
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { handleYearChange } from '../utils/handleYearChange';
@@ -25,7 +25,7 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-const fetchData = async () => {
+const fetchData = async (year : string) => {
   setLoading(true);
   setError('');
 
@@ -55,27 +55,27 @@ const fetchData = async () => {
     setLoading(false);
   }
 };
-
-   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleYearChange= (e: React.ChangeEvent<HTMLSelectElement>)=> {
     e.preventDefault();
-    const parsedYear = parseInt(year);
-      fetchData();
+    const selectedYear = e.target.value;
+  setYear(selectedYear);
+    fetchData(selectedYear);
   };
+ 
   useEffect(() => { 
-    fetchData();
+    fetchData(year);
   },[])
 
 
   return (
     <div>
-      <div className="pt-[40px]">
-        <form onSubmit={handleSubmit}  className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
-          <h1 className='mb-6 text-3xl font-bold text-center font-mutuka'>CONSTRUCTORS</h1>
-          <div className="mb-4">
+      <div className="pt-[80px]">
+          <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>CONSTRUCTORS</h1>
+          <div className="flex items-center justify-center mb-4">
                <select 
                 value={year} 
-                onChange={(e) => setYear(e.target.value)}
-                className='w-full p-2 mb-1 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                onChange={handleYearChange}
+                className='w-[200px] p-2 mb-1 font-mono text-2xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1},
                (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -85,13 +85,6 @@ const fetchData = async () => {
         </div>
           
           {error && <span className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</span>}
-         <button
-          type="submit"
-            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-         >
-         Submit
-       </button>
-        </form>
       </div>
       {loading ? (
         <div className="flex items-center justify-center">

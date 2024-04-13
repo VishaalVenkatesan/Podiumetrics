@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-import CountryImage from '@/components/CountryImage';
+import CountryImage from '@/components/NationalityFlag';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
 interface ConstructorStanding {

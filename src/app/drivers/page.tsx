@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {Link} from "@nextui-org/react";
 import { useEffect, useState } from 'react';
-import CountryImage  from "../../components/CountryImage";
+import CountryImage  from "../../components/NationalityFlag";
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {reverseDate} from '../utils/ageUtils'
 
@@ -24,37 +24,38 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError('');
+const fetchData = async (year: string) => {
+  setLoading(true);
+  setError('');
 
-    try {
-      const response = await axios.get(`https://ergast.com/api/f1/${year}/drivers`);
-      const parser = new xml2js.Parser();
-      const result = await parser.parseStringPromise(response.data);
+  try {
+    const response = await axios.get(`https://ergast.com/api/f1/${year}/drivers`);
+    const parser = new xml2js.Parser();
+    const result = await parser.parseStringPromise(response.data);
 
-      // Extract the drivers data from the parsed JSON
-      const drivers = result.MRData.DriverTable[0].Driver;
-      setDrivers(drivers);
-    } catch (error) {
-      setError('Error fetching data. Please try again later.');
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Extract the drivers data from the parsed JSON
+    const drivers = result.MRData.DriverTable[0].Driver;
+    setDrivers(drivers);
+  } catch (error) {
+    setError('Error fetching data. Please try again later.');
+    console.error('Error:', error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
-    fetchData();
+    fetchData(year);
   },[]); // Empty dependency array means this effect runs once on mount
 
   useEffect(() => {
   },[drivers]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleYearChange= (e: React.ChangeEvent<HTMLSelectElement>)=> {
     e.preventDefault();
-    const parsedYear = parseInt(year);
-    fetchData();
+    const selectedYear = e.target.value;
+  setYear(selectedYear);
+    fetchData(selectedYear);
     setShowAge(true);
   };
 
@@ -65,13 +66,12 @@ const Page = () => {
 
   return (
     <div>
-      <div className="pt-[40px]">
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md">
-            <h1 className='mb-6 text-3xl font-bold text-center font-mutuka'>DRIVERS</h1>
+      <div className="pt-[80px] flex flex-col items-center justify-center">
+             <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>DRIVERS</h1>
               <select 
                 value={year} 
-                onChange={(e) => {setYear(e.target.value); setShowAge(false);}}
-                className='p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                onChange={handleYearChange}
+                className='w-[200px] p-3 font-mono text-2xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -80,13 +80,6 @@ const Page = () => {
           <div className="pt-2 pb-5 text-center">
           {error && <span className="text-red-500 ">{error}</span>}
           </div>
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-500 rounded ont-bold hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-          >
-            Submit
-          </button>
-        </form>
       </div>
       
         {loading ? (

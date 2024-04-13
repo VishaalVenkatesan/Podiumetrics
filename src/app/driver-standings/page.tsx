@@ -2,10 +2,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import CountryImage from '@/components/CountryImage';
+import CountryImage from '@/components/NationalityFlag';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
-import {Select, SelectSection, SelectItem} from "@nextui-org/react";
 
 interface Driver {
   driverId: string[];
@@ -91,28 +90,29 @@ const Page = () => {
       setSelectedRace(circuitData[0]); // Select the first race by default
     }
   };
-
+  
   fetchCircuitData();
 }, [year, setError]);
+
 
 const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   fetchData();
 };
 const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const selectedRound = e.target.value;
-  const selectedRace = circuits.find(
-    (circuit) => circuit.round.toString() === selectedRound
-  );
-  setSelectedRace(selectedRace || null);
-  setRound(selectedRound); // Set the round according to the selected race
-};
+    const selectedRound = e.target.value;
+    const selectedRace = circuits.find(
+      (circuit) => circuit.round.toString() === selectedRound
+    );
+    setSelectedRace(selectedRace || null);
+    setRound(selectedRound); // Set the round according to the selected race
+  };
 
 useEffect(() => {
   fetchData(); // Fetch data whenever the round changes
 }, [round]);
 
-const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear: React.Dispatch<React.SetStateAction<string>>, setError: React.Dispatch<React.SetStateAction<string>>) => {
+const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedYear = e.target.value;
   setYear(selectedYear);
   const fetchedRaces = await fetchRound(setError, selectedYear);
@@ -127,7 +127,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
       >
            <select 
                 value={year} 
-                onChange={(e) => {setYear(e.target.value)}}
+                onChange={handleYearChange}
                 className='w-full p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
