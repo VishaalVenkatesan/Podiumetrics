@@ -43,7 +43,7 @@ const fetchData = async () => {
     const circuits = result.MRData.CircuitTable[0].Circuit;
     setCircuits(circuits);
   } catch (error) {
-    setError('Error fetching data. Please try again later.');
+    setError('Error fetching data. Please check your internet connection or try again later.');
     console.error('Error:', error);
   } finally {
     setLoading(false);

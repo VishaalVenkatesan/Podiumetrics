@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import CountryImage from '@/components/CountryImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { handleYearChange } from '../utils/handleYearChange';
 import { fetchRound, Race } from '../utils/fetchRound';
 interface ConstructorStanding {
   position: number;
@@ -44,7 +43,7 @@ const Page = () => {
 
       setConstructorStandings(constructorStandings);
     } catch (error) {
-      setError('Error fetching data. Please try again later.');
+      setError('Error fetching data. Please check your internet connection or try again later.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -123,7 +122,7 @@ const Page = () => {
         </button>
       </form>
      {error ? (
-  <div className="text-center text-red-500">{error}</div>
+  <div className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</div>
 ) : loading ? (
   <div className="flex items-center justify-center">
     <LoadingSpinner />

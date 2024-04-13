@@ -55,9 +55,6 @@ const Nav = () => {
         <NavbarMenuItem>
           <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/constructor-standings">Constructor Standings</Link>
         </NavbarMenuItem>
-         <NavbarMenuItem>
-          <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/results">Results</Link>
-        </NavbarMenuItem>
         <NavbarMenuItem>
           <Link className="py-2 text-2xl font-extrabold font-mutuka" href="/tracks">Tracks</Link>
         </NavbarMenuItem>

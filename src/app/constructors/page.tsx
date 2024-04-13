@@ -49,14 +49,12 @@ const fetchData = async () => {
   });
     setConstructors(constructorData);
   } catch (error) {
-    setError('Error fetching data. Please try again later.');
+    setError('Error fetching data. Please check your internet connection or try again later.');
     console.error('Error:', error);
   } finally {
     setLoading(false);
   }
 };
-
-
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,7 +75,7 @@ const fetchData = async () => {
                <select 
                 value={year} 
                 onChange={(e) => setYear(e.target.value)}
-                className='w-full p-2 mb-3 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                className='w-full p-2 mb-1 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1},
                (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -86,7 +84,7 @@ const fetchData = async () => {
             </select>
         </div>
           
-          {error && <span className="ml-2 text-red-500">{error}</span>}
+          {error && <span className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</span>}
          <button
           type="submit"
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"

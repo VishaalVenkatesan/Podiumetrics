@@ -76,7 +76,7 @@ const Page = () => {
       setConstructors(constructors);
       setStandings(standings);
     } catch (error) {
-      setError('Well, this is awkward. I wish i could predict the future.');
+      setError('If this is 2024, this is awkward. I wish i could predict the future or else there is an error fetching the data. Please check your internet connection or try again later.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -97,10 +97,6 @@ const Page = () => {
 
 const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-  if (!selectedRace) {
-    setError('Error fetching data. Please try again later.');
-    return;
-  }
   fetchData();
 };
 const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -160,9 +156,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLInputElement>, setYear:
       </form>
       <div>
       {error ? (
-        <div className= "flex flex-col ">
-        <div className="text-4xl font-extrabold text-center text-blue-500 font-carlson mt-[50px]">{error}</div>
-        </div>
+        <div className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</div>
       )
         :loading ? (
           <div className="flex items-center justify-center">
