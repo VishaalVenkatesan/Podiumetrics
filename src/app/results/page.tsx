@@ -53,7 +53,7 @@ const Page = () => {
 const fetchData = async () => {
   setLoading(true);
   setError('');
-  const url = `http://ergast.com/api/f1/${year}/${round}/results`;
+  const url = `https://ergast.com/api/f1/${year}/${round}/results`;
   console.log('URL:', url);
   console.log('Year:', year);
   console.log('Round:', round);
