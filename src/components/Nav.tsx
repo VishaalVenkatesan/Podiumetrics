@@ -7,19 +7,19 @@ const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <div className="pt-5">
-    <Navbar shouldHideOnScroll  onMenuOpenChange={setIsMenuOpen}>
+    <div className="flex flex-row justify-between pt-5">
+      <div className="flex flex-row gap-x-4">
+       <Link href="/" className="text-3xl font-bold font-rockwell pl-[20px]">Podiumetrics</Link>
+          <ThemeSwitcher />
+          </div>
+          <div className="">
+      <Navbar shouldHideOnScroll  onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="md:hidden"
+          className="flex items-end justify-end pb-2 md:hidden"
         />
-        <NavbarBrand >
-          <Link href="/" className="pt-3 md:pl-0 text-4xl font-bold font-rockwell md:pr-[200px]">Podiumetrics</Link>
-          <div className=" pt-3 pl-4 md:pt-1 md:pl-[10px]">
-          <ThemeSwitcher />
-          </div>
-        </NavbarBrand>
+       
       </NavbarContent>
       <NavbarContent className="hidden space-x-[50px] md:flex justify-center font-mutuka text-[20px]">
         <NavbarItem>
@@ -65,6 +65,7 @@ const Nav = () => {
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
+    </div>
     </div>
   )
 }

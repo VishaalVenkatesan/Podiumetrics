@@ -146,6 +146,7 @@ const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 return (
   <div>
     <div className="flex flex-col items-center justify-center gap-y-4 mt-[50px]">
+       <h1 className='mb-3 font-mono text-4xl font-bold text-center mt-[30px]'>RACE RESULT</h1>
       <select 
         value={year} 
         onChange={handleYearChange}
@@ -160,7 +161,7 @@ return (
         value={selectedRace ? selectedRace.round : ''}
         onChange={handleRaceChange}
         name='round' 
-        className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+        className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline mb-4'
       >
         {circuits.map((race) => (
           <option  key={race.round} value={race.round}>
@@ -178,7 +179,7 @@ return (
         <div>{error}</div>
       ) : selectedRace ? (
         <div className="overflow-auto">
-          <h1 className='mb-6 font-mono text-4xl font-bold text-center mt-[30px]'>RACE RESULT</h1>
+         
           <Table isStriped aria-label="Standings table" className='px-0 text-center font-carlson'>
             <TableHeader>
               <TableColumn className='text-center'>Grid</TableColumn>

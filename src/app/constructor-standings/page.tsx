@@ -89,7 +89,7 @@ const Page = () => {
            <select 
                 value={year} 
                 onChange={handleYearChange}
-                className='md:w-[400px] w-[300px] p-4 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
+                className='md:w-[400px] w-[300px] p-2 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -100,7 +100,7 @@ const Page = () => {
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
            name='round' 
-           className='md:w-[400px] w-[300px] h-[70px] font-mono text-large p-2 font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
+           className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline mb-4'
           >
             {circuits.map((race) => (
               <option  key={race.round} value={race.round}>

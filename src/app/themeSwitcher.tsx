@@ -13,7 +13,7 @@ export function ThemeSwitcher() {
   if(!mounted) return null
 
   return (
-    <div className="">
+    <div className="pt-[17px]">
       <button 
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         style={{ transition: 'color 0.5s', background: 'none', border: 'none' }}

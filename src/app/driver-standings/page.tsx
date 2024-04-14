@@ -117,10 +117,11 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center gap-y-4 mt-[50px]">
+        <h1 className='mb-6 font-mono text-4xl font-bold text-center mt-[30px]'>World Drivers Championship</h1>
            <select 
                 value={year} 
                 onChange={handleYearChange}
-                className='md:w-[400px] w-[300px] p-2 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
+                    className='md:w-[400px] w-[300px] p-2 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -131,7 +132,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
            name='round' 
-           className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+            className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline mb-4'
           >
             {circuits.map((race) => (
               <option  key={race.round} value={race.round}>
@@ -149,8 +150,8 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
            <LoadingSpinner />
             </div>
           ):(
-       <div className="">
-        <h1 className='mb-6 font-mono text-4xl font-bold text-center mt-[50px]'>World Drivers Championship</h1>
+       <div className="mt-[20px]">
+        
       <Table isStriped aria-label="Standings table"  className='text-xl font-carlson '>
         <TableHeader>
           <TableColumn className='text-center'>Position</TableColumn>
