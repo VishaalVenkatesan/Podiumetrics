@@ -65,7 +65,7 @@ useEffect(() => {
   return (
   <div>
      <div className="pt-[80px] flex items-center justify-center flex-col">
-            <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>CIRCUITS</h1>
+            <h1 className='mb-6 font-mono text-4xl font-bold text-center'>CIRCUITS</h1>
               <select 
                 value={year} 
                 onChange={handleYearChange}
