@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import {reverseDate} from '../utils/ageUtils'
 
 interface Driver {
+  PermanentNumber: number;
   GivenName: string[];
   FamilyName: string[];
   Nationality: string[];
@@ -92,9 +93,10 @@ const fetchData = async (year: string) => {
         {drivers.map((driver, index) => (
           <div key={index} className='p-6 text-center text-xl border-b rounded-[20px] m-3 flex flex-col gap-y-7'>
             <h2 className='text-3xl font-bold font-mutuka'>{driver.GivenName[0]} {driver.FamilyName[0]}</h2>
+            {driver.PermanentNumber && <h2 className='text-2xl font-extrabold font-inter'>{driver.PermanentNumber}</h2>}
               <CountryImage nationality={driver.Nationality[0]} />
-            <p>Date of Birth: {reverseDate(driver.DateOfBirth[0])}</p>
-            {showAge && <p>Age: {calculateAge(driver.DateOfBirth[0])}</p>}
+            <p className='font-semibold font-inter'>DOB: {reverseDate(driver.DateOfBirth[0])}</p>
+            {showAge && <p className='font-semibold font-inter'>Age: {calculateAge(driver.DateOfBirth[0])}</p>}
             <div className="flex items-center justify-center">
             <Link isExternal href={driver.$.url} className='font-mono font-bold text-center'
               showAnchorIcon

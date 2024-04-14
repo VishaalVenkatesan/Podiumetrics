@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 const {nextui} = require("@nextui-org/react");
 
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -34,6 +35,9 @@ const config: Config = {
         lora: ['Lora','serif'],
         roboto: ['Roboto', 'sans-serif'],
         rockwell: ['Rockwell', 'serif'],
+        inter: ['Inter', 'sans-serif'],
+        opensans: ['Open Sans', 'sans-serif'],
+        lato: ['Lato', 'sans-serif'],
        },
         screens: {
             xs: "480px",
