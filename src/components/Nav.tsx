@@ -44,24 +44,24 @@ const Nav = () => {
           <Link color="foreground" href="/tracks">Tracks</Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className="space-y-5">
+      <NavbarMenu className="space-y-3">
         <NavbarMenuItem>
-          <Link className="p-2 pt-10 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/drivers">Drivers</Link>
+          <Link className="p-2 pt-[40px] text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/drivers">Drivers</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="p-2 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/constructors">Constructors</Link>
+          <Link className="p-2 text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/constructors">Constructors</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="p-2 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/results">Results</Link>
+          <Link className="p-2 text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/results">Results</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="p-2 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/driver-standings">Driver Standings</Link>
+          <Link className="p-2 text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/driver-standings">Driver Standings</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="p-2 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/constructor-standings">Constructor Standings</Link>
+          <Link className="p-2 text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/constructor-standings">Constructor Standings</Link>
         </NavbarMenuItem>
         <NavbarMenuItem>
-          <Link className="p-2 text-2xl font-bold transition duration-150 rounded-lg font-rockwell hover:text-indigo-600 hover:bg-gray-100" href="/tracks">Tracks</Link>
+          <Link className="p-2 text-2xl underline transition duration-150 rounded-lg font-rockwell hover:text-red-900" href="/tracks">Tracks</Link>
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
