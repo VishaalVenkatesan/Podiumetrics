@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import CountryImage from "../../components/NationalityFlag"; 
 import {Link} from "@nextui-org/react";
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { handleYearChange } from '../utils/handleYearChange';
 
 interface Constructor {
   constructorId: string[];
@@ -70,12 +69,12 @@ const fetchData = async (year : string) => {
   return (
     <div>
       <div className="pt-[80px]">
-          <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>CONSTRUCTORS</h1>
+          <h1 className='mb-6 font-mono text-4xl font-bold text-center '>CONSTRUCTORS</h1>
           <div className="flex items-center justify-center mb-4">
                <select 
                 value={year} 
                 onChange={handleYearChange}
-                className='w-[200px] p-2 mb-1 font-mono text-2xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                className='w-[200px] p-2 mb-1 border-b font-mono text-2xl font-bold text-center rounded-md focus:outline-none border-black'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1},
                (_, i) => new Date().getFullYear() - i).map((year) => (
@@ -93,7 +92,7 @@ const fetchData = async (year : string) => {
       ) : (
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
         {constructors.map((constructor, index) => (
-          <div key={index} className='p-6 text-center text-xl bg-gray-900 rounded-[20px] m-3 flex flex-col gap-y-7 '
+          <div key={index} className='p-6 text-center text-xl border-b  rounded-[20px] m-3 flex flex-col gap-y-7 '
            >
             <h2 className='text-3xl font-bold font-mutuka'>{constructor.name.toUpperCase()}</h2>
             <p className='font-semibold font-carlson'>{constructor.nationality}</p>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import CountryImage from '@/components/NationalityFlag';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import  LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
 
 interface Driver {
@@ -75,7 +75,7 @@ const Page = () => {
       setConstructors(constructors);
       setStandings(standings);
     } catch (error) {
-      setError('If this is 2024, this is awkward. I wish i could predict the future or else there is an error fetching the data. Please check your internet connection or try again later.');
+       setError('If this is 2024, I wish I could predict the future or else there is an error fetching the data. Please check your internet connection or try again later.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -121,14 +121,11 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md gap-y-6"
-      >
+      <div className="flex flex-col items-center justify-center gap-y-4 mt-[50px]">
            <select 
                 value={year} 
                 onChange={handleYearChange}
-                className='w-full p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                className='md:w-[400px] w-[300px] p-2 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -139,7 +136,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
            name='round' 
-           className='w-full p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+           className='md:w-[400px] w-[300px] p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
           >
             {circuits.map((race) => (
               <option  key={race.round} value={race.round}>
@@ -147,16 +144,10 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
               </option>
            ))}
           </select>
-        <button
-          type="submit"
-          className="py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-        >
-          Submit
-        </button>
-      </form>
+           </div>
       <div>
       {error ? (
-        <div className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</div>
+        <div className="mb-4 ml-2 text-3xl text-center text-red-600 font-mutuka md:ml-[100px] md:mr-[100px] mt-[120px]">{error}</div>
       )
         :loading ? (
           <div className="flex items-center justify-center">
@@ -164,7 +155,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
             </div>
           ):(
        <div className="">
-        <h1 className='mb-4 text-2xl font-extrabold text-center font-mutuka'>World Drivers Championship</h1>
+        <h1 className='mb-6 font-mono text-4xl font-bold text-center mt-[50px]'>World Drivers Championship</h1>
       <Table isStriped aria-label="Standings table"  className='text-xl font-carlson '>
         <TableHeader>
           <TableColumn className='text-center'>Position</TableColumn>
@@ -195,6 +186,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
       </div>
           )}
           </div>
+           
   </div>
   );
 }

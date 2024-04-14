@@ -67,7 +67,7 @@ const fetchData = async (year: string) => {
   return (
     <div>
       <div className="pt-[80px] flex flex-col items-center justify-center">
-             <h1 className='mb-6 font-mono text-4xl font-bold text-center text-red-800'>DRIVERS</h1>
+             <h1 className='mb-6 font-mono text-4xl font-bold text-center'>DRIVERS</h1>
               <select 
                 value={year} 
                 onChange={handleYearChange}
@@ -87,10 +87,10 @@ const fetchData = async (year: string) => {
             <LoadingSpinner />
           </div>
         ):(
-          <div className="flex flex-col gap-4 md:grid md:grid-cols-3 font-roboto">
+          <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
           
         {drivers.map((driver, index) => (
-          <div key={index} className='p-6 text-center text-xl bg-gray-900 rounded-[20px] m-3 flex flex-col gap-y-7 focus:outline-none focus:shadow-outline' >
+          <div key={index} className='p-6 text-center text-xl border-black border-b rounded-[20px] m-3 flex flex-col gap-y-7 focus:outline-none focus:shadow-outline' >
             <h2 className='text-3xl font-bold font-mutuka'>{driver.GivenName[0]} {driver.FamilyName[0]}</h2>
               <CountryImage nationality={driver.Nationality[0]} />
             <p>Date of Birth: {reverseDate(driver.DateOfBirth[0])}</p>

@@ -23,6 +23,7 @@ const Page = () => {
   const [error, setError] = useState('');
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
   const [circuits, setCircuits] = useState<Race[]>([]);
+  const [races, setRaces] = useState<Race[]>([]);
 
   const fetchConstructorData = async () => {
     setLoading(true);
@@ -43,7 +44,7 @@ const Page = () => {
 
       setConstructorStandings(constructorStandings);
     } catch (error) {
-      setError('Error fetching data. Please check your internet connection or try again later.');
+    setError('If this is 2024, I wish I could predict the future or else there is an error fetching the data. Please check your internet connection or try again later.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -64,15 +65,14 @@ const Page = () => {
   useEffect(() => {
     fetchConstructorData(); // Fetch data whenever the round changes
   }, [round]);
+  
+  const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedYear = e.target.value;
+  setYear(selectedYear);
+  const fetchedRaces = await fetchRound(setError, selectedYear);
+  setRaces(fetchedRaces || []);
+};
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (year >= '1950' && year <= currentYear.toString()) {
-      fetchConstructorData();
-    } else {
-      setError('Please enter a year between 1950 and the current year.');
-    }
-  };
   const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedRound = e.target.value;
   const selectedRace = circuits.find(
@@ -82,21 +82,14 @@ const Page = () => {
   setRound(selectedRound); // Set the round according to the selected race
 };
 
-
-  const handleRoundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRound(e.target.value);
-  };
-
   return(
     <div>
-       <form
-        onSubmit={handleSubmit}
-        className="flex flex-col max-w-md p-8 mx-auto rounded-lg shadow-md gap-y-6"
-      >
+        <div className="flex flex-col items-center justify-center gap-y-4 mt-[50px]">
+          <h1 className='mb-6 font-mono text-4xl font-bold text-center mt-[20px]' >World Constructor Championship </h1>
            <select 
                 value={year} 
-                onChange={(e) => {setYear(e.target.value)}}
-                className='w-full p-2 font-mono text-xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+                onChange={handleYearChange}
+                className='md:w-[400px] w-[300px] p-4 font-mono text-xl font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (
               <option key={year} value={year}>{year}</option>
@@ -106,34 +99,28 @@ const Page = () => {
            id="race"
            value={selectedRace ? selectedRace.round : ''}
            onChange={handleRaceChange}
-            className='w-full p-4 font-mono font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
+           name='round' 
+           className='md:w-[400px] w-[300px] h-[70px] font-mono text-large p-2 font-bold text-center rounded-md  focus:outline-none focus:shadow-outline'
           >
             {circuits.map((race) => (
-              <option key={race.round} value={race.round}>
+              <option  key={race.round} value={race.round}>
                 {race.RaceName[0]} ({race.Circuit[0].CircuitName[0]})
               </option>
            ))}
           </select>
-        <button
-          type="submit"
-          className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-        >
-          Submit
-        </button>
-      </form>
+           </div>
      {error ? (
-  <div className="mb-4 ml-2 text-xl text-center text-red-600 font-mutuka">{error}</div>
+  <div className="mb-4 ml-2 text-3xl text-center text-red-600 font-mutuka md:ml-[100px] md:mr-[100px] mt-[120px]">{error}</div>
 ) : loading ? (
   <div className="flex items-center justify-center">
     <LoadingSpinner />
   </div>
 ) : (
   <div className="mt-10">
-    <h1 className='mb-4 text-3xl font-extrabold text-center font-mutuka' >World Constructor Championship </h1>
-    <Table className='font-mono text-2xl text-center mt-7'>
+    <Table className='text-xl text-center mt-7'>
       <TableHeader>
         <TableColumn className='text-center'>Position</TableColumn>
-        <TableColumn className='text-center'> </TableColumn>
+        <TableColumn className='text-center'>Nationality</TableColumn>
         <TableColumn className='text-center'>Team</TableColumn>
         <TableColumn className='text-center'>Points</TableColumn>
         <TableColumn className='text-center'>Wins</TableColumn>
