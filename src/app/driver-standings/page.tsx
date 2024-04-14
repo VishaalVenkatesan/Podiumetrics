@@ -94,11 +94,6 @@ const Page = () => {
   fetchCircuitData();
 }, [year, setError]);
 
-
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  fetchData();
-};
 const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRound = e.target.value;
     const selectedRace = circuits.find(

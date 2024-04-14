@@ -85,9 +85,9 @@ useEffect(() => {
         <LoadingSpinner />
       </div>
     ) : (
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-3 font-roboto">
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
         {circuits.map((circuit, index) => (
-          <div key={index} className='p-6 text-center text-xl bg-gray-900 rounded-[20px] m-3 flex flex-col gap-y-7 focus:outline-none focus:shadow-outline'>
+          <div key={index} className='p-6 text-center text-xl border-b  rounded-[20px] m-3 flex flex-col gap-y-7 '>
             <h2 className='text-3xl font-bold font-mutuka'>{circuit.CircuitName[0]}</h2>
              <CountryFlag name={circuit.Location[0].Country[0]} />
             <p> {circuit.Location[0].Locality[0]}, {circuit.Location[0].Country[0]}</p>

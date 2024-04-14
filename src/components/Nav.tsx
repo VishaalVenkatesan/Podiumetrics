@@ -15,8 +15,8 @@ const Nav = () => {
           className="md:hidden"
         />
         <NavbarBrand >
-          <Link href="/" className="pt-3 pl-5 md:pl-0 text-4xl font-bold font-rockwell md:pr-[200px]">Podiumetrics</Link>
-          <div className="pl-[30px] pt-[5px] md:pl-[10px]">
+          <Link href="/" className="pt-3 md:pl-0 text-4xl font-bold font-rockwell md:pr-[200px]">Podiumetrics</Link>
+          <div className=" pt-3 pl-4 md:pt-1 md:pl-[10px]">
           <ThemeSwitcher />
           </div>
         </NavbarBrand>

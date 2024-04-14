@@ -90,7 +90,7 @@ const fetchData = async (year: string) => {
           <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
           
         {drivers.map((driver, index) => (
-          <div key={index} className='p-6 text-center text-xl border-black border-b rounded-[20px] m-3 flex flex-col gap-y-7 focus:outline-none focus:shadow-outline' >
+          <div key={index} className='p-6 text-center text-xl border-b rounded-[20px] m-3 flex flex-col gap-y-7'>
             <h2 className='text-3xl font-bold font-mutuka'>{driver.GivenName[0]} {driver.FamilyName[0]}</h2>
               <CountryImage nationality={driver.Nationality[0]} />
             <p>Date of Birth: {reverseDate(driver.DateOfBirth[0])}</p>

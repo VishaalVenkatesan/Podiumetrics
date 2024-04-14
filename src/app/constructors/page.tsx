@@ -92,8 +92,7 @@ const fetchData = async (year : string) => {
       ) : (
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">
         {constructors.map((constructor, index) => (
-          <div key={index} className='p-6 text-center text-xl border-b  rounded-[20px] m-3 flex flex-col gap-y-7 '
-           >
+          <div key={index} className='p-6 text-center text-xl border-b  rounded-[20px] m-3 flex flex-col gap-y-7 '>
             <h2 className='text-3xl font-bold font-mutuka'>{constructor.name.toUpperCase()}</h2>
             <p className='font-semibold font-carlson'>{constructor.nationality}</p>
             <CountryImage nationality={constructor.nationality} />
