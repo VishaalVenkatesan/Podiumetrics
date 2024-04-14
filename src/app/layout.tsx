@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Nav, Footer} from "../components/index"
 import {Providers} from "./providers";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "Podiumetrics",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <Providers>
         <Nav />
         {children}
+        <Analytics />
         <div className="mt-auto">
          <div className="absolute bottom-0 w-full footer">
         <Footer />
