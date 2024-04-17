@@ -1,10 +1,11 @@
+"use client"
 import { useEffect, useState } from 'react';
 import { fetchCountry} from "../app/utils/fetchCountry";
 import Image from 'next/image';
 
 interface CountryImageProps {
   name: string;
-  size?: number; // Add a size prop
+  size?: number; 
 }
 
 const CountryImage: React.FC<CountryImageProps> = ({ name, size = 100 }) => { // Set a default size
