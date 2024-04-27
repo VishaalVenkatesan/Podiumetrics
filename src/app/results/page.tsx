@@ -105,7 +105,7 @@ const fetchData = async () => {
 
     setResult(endResult);
   } catch (error) {
-    setError('Please check your internet connection or try again later.');
+    setError('If this is 2024, I wish I could predict the future or else there is an error fetching the data. Please check your internet connection or try again later.');
     console.error('Error:', error);
   } finally {
     setLoading(false);
@@ -176,7 +176,7 @@ return (
           <LoadingSpinner />
         </div>
       ) : error ? (
-        <div>{error}</div>
+         <div className="mb-4 ml-2 text-3xl text-center text-red-600 font-mutuka md:ml-[100px] md:mr-[100px] mt-[120px]">{error}</div>
       ) : selectedRace ? (
         <div className="overflow-auto">
          
