@@ -72,6 +72,7 @@ const fetchData = async (year: string) => {
               <select 
                 value={year} 
                 onChange={handleYearChange}
+                name='Select your desired year'
                 className='w-[200px] p-3 font-mono text-2xl font-bold text-center rounded-md focus:outline-none focus:shadow-outline'
                 >
               {Array.from({length: new Date().getFullYear() - 1950 + 1}, (_, i) => new Date().getFullYear() - i).map((year) => (

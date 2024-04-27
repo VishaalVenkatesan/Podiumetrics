@@ -2,14 +2,18 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from "@nextui-org/react";
 import React from "react";
 import { ThemeSwitcher } from "@/app/themeSwitcher";
+import steering from "../../public/steering.png";
+import Image from "next/image";
+import { useMediaQuery } from 'react-responsive';
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   return (
     <div className="flex flex-row justify-between pt-5">
       <div className="flex flex-row gap-x-4">
-       <Link href="/" className="text-3xl font-bold font-rockwell pl-[20px]">Podiumetrics</Link>
+        <Image src={steering} alt="Podiumetrics" width={isMobile ? 60 : 70} height={isMobile ? 60 : 70} className="pb-5 pl-4"/>
+       <Link href="/" className="text-3xl font-bold font-rockwell">Podiumetrics</Link>
           <ThemeSwitcher />
           </div>
           <div className="">

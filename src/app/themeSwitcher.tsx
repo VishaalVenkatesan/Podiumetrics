@@ -17,6 +17,7 @@ export function ThemeSwitcher() {
       <button 
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         style={{ transition: 'color 0.5s', background: 'none', border: 'none' }}
+        name="Toggle Theme"
       >
         {theme === 'dark' ? <IoMdSunny size={24} /> : <IoMdMoon size={24} />}
       </button>
