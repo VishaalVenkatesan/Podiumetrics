@@ -12,8 +12,10 @@ const Nav = () => {
   return (
     <div className="flex flex-row justify-between pt-5">
       <div className="flex flex-row gap-x-4">
-        <Image src={steering} alt="Podiumetrics" width={isMobile ? 60 : 70} height={isMobile ? 60 : 70} className="pb-5 pl-4"/>
-       <Link href="/" className="text-3xl font-bold font-rockwell">Podiumetrics</Link>
+        {isMobile ?
+        null
+        : <Image src={steering} alt="Podiumetrics" width='70' height='70' className="pb-5 pl-4"/>}
+        <Link href="/" className='text-3xl font-bold font-rockwell pl-[10px]'>Podiumetrics</Link>
           <ThemeSwitcher />
           </div>
           <div className="">
