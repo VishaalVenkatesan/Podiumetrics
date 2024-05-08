@@ -5,6 +5,9 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
 import CountryImage from '@/components/NationalityFlag';
+import greenTri from '../../../public/green-tri.png';
+import redTri from '../../../public/red-tri.png';
+import Image from 'next/image';
 interface Result {
     position: number;
     points: number;
@@ -142,7 +145,7 @@ const handleRaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRace(selectedRace || null);
     setRound(selectedRound); // Set the round according to the selected race
   };
-
+    
 return (
   <div>
     <div className="flex flex-col items-center justify-center gap-y-4 mt-[50px]">
@@ -180,9 +183,9 @@ return (
       ) : selectedRace ? (
         <div className="overflow-auto">
          
-          <Table isStriped aria-label="Standings table" className='px-0 text-center font-carlson'>
+          <Table aria-label="Standings table" className='p-1 text-center font-carlson'>
             <TableHeader>
-              <TableColumn className='text-center'>Grid</TableColumn>
+              <TableColumn className='text-center'>Net</TableColumn>
               <TableColumn className='text-center'>Position</TableColumn>
               <TableColumn className='text-center'>Nationality</TableColumn>
               <TableColumn className='text-center'>Name</TableColumn>
@@ -197,7 +200,22 @@ return (
             <TableBody>
               {result.map((standing, index) => (
                 <TableRow key={index}>
-                  <TableCell className='text-center'>{standing.grid}</TableCell>
+                  <TableCell className='text-center'>
+                   {
+                  standing.grid - standing.position > 0 ? 
+                    <div className="flex flex-row">               
+                      <Image src={greenTri} alt='green-tri' width={20} height={10}/>
+                      <h1 className='pl-3 font-bold'>{standing.grid - standing.position}</h1>
+                    </div> :
+                  standing.grid - standing.position < 0 ?
+                    <div className="flex flex-row">
+                     <Image src={redTri} alt='red-tri' width={20} height={20}/>
+                      <h1 className='pl-3 font-bold '>{Math.abs(standing.grid - standing.position)}</h1>
+                    </div> :
+                  <h1 className='text-xl font-bold font-mutuka'>-</h1>
+                }
+                      
+                    </TableCell>
                   <TableCell className='text-center'>{standing.position}</TableCell>
                   <TableCell className='flex items-center justify-center align-center'>
                     <CountryImage nationality={standing.driver.nationality} size={30}/>
