@@ -3,8 +3,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 import CountryImage from '@/components/NationalityFlag';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { fetchRound, Race } from '../utils/fetchRound';
+import dynamic from 'next/dynamic';
+const DynamicLoadingSpinner = dynamic(() => import('@/components/LoadingSpinner.client'), {
+  ssr: false, // This will load the component only on client side
+});
 interface ConstructorStanding {
   position: number;
   points: number;
@@ -113,7 +116,7 @@ const Page = () => {
   <div className="mb-4 ml-2 text-3xl text-center text-red-600 font-mutuka md:ml-[100px] md:mr-[100px] mt-[120px]">{error}</div>
 ) : loading ? (
   <div className="flex items-center justify-center">
-    <LoadingSpinner />
+    <DynamicLoadingSpinner />
   </div>
 ) : (
   <div className="mt-10">

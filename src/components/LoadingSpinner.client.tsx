@@ -1,5 +1,4 @@
-// LoadingSpinner.tsx
-import React from 'react';
+"use client"
 import { useTheme } from 'next-themes';
 import { helix } from "ldrs"
 

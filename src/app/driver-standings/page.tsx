@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import CountryImage from '@/components/NationalityFlag';
-import  LoadingSpinner from '@/components/LoadingSpinner';
+import dynamic from 'next/dynamic';
+const DynamicLoadingSpinner = dynamic(() => import('@/components/LoadingSpinner.client'), {
+  ssr: false, // This will load the component only on client side
+});
 import { fetchRound, Race } from '../utils/fetchRound';
 
 interface Driver {
@@ -147,7 +150,7 @@ const handleYearChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
       )
         :loading ? (
           <div className="flex items-center justify-center">
-           <LoadingSpinner />
+            <DynamicLoadingSpinner />
             </div>
           ):(
        <div className="mt-[20px]">

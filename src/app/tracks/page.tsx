@@ -1,7 +1,10 @@
 "use client"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import LoadingSpinner from '@/components/LoadingSpinner';
+const DynamicLoadingSpinner = dynamic(() => import('@/components/LoadingSpinner.client'), {
+  ssr: false, // This will load the component only on client side
+});
+import dynamic from 'next/dynamic';
 import {Link} from "@nextui-org/react";
 import CountryFlag from '@/components/CountryFlag';
 
@@ -82,7 +85,7 @@ useEffect(() => {
       
     {loading ? (
       <div className="flex items-center justify-center">
-        <LoadingSpinner />
+        <DynamicLoadingSpinner />
       </div>
     ) : (
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">

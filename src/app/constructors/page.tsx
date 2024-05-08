@@ -4,7 +4,10 @@ import axios from 'axios';
 import { useState, useEffect } from "react";
 import CountryImage from "../../components/NationalityFlag"; 
 import {Link} from "@nextui-org/react";
-import LoadingSpinner from '@/components/LoadingSpinner';
+const DynamicLoadingSpinner = dynamic(() => import('@/components/LoadingSpinner.client'), {
+  ssr: false, // This will load the component only on client side
+});
+import dynamic from 'next/dynamic';
 
 interface Constructor {
   constructorId: string[];
@@ -87,7 +90,7 @@ const fetchData = async (year : string) => {
       </div>
       {loading ? (
         <div className="flex items-center justify-center">
-            <LoadingSpinner />
+            <DynamicLoadingSpinner />
           </div>
       ) : (
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 font-roboto">

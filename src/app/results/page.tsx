@@ -2,7 +2,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import LoadingSpinner from '@/components/LoadingSpinner';
+const DynamicLoadingSpinner = dynamic(() => import('@/components/LoadingSpinner.client'), {
+  ssr: false, // This will load the component only on client side
+});
+import dynamic from 'next/dynamic';
 import { fetchRound, Race } from '../utils/fetchRound';
 import CountryImage from '@/components/NationalityFlag';
 import greenTri from '../../../public/green-tri.png';
@@ -176,7 +179,7 @@ return (
     <div>
       {loading ? (
         <div className="flex items-center justify-center">
-          <LoadingSpinner />
+          <DynamicLoadingSpinner />
         </div>
       ) : error ? (
          <div className="mb-4 ml-2 text-3xl text-center text-red-600 font-mutuka md:ml-[100px] md:mr-[100px] mt-[120px]">{error}</div>
